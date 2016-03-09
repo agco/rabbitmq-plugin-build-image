@@ -1,15 +1,24 @@
 #!/bin/bash
 set -e
 
+echo "Args = $1"
+echo "@ `pwd`"
+
 if [ "$1" != 'bash' ]; then
 	set -- make "$@"
 fi
 
-cd /data && cp -R * /build
-cd /build
+if [[ -n "$CLEAN_REPO" ]]; then
+	if [ "$(ls -A /data)" ]; then
+		cd /data && cp -R * /build
+		cd /build
+	fi
+fi
 
 exec "$@"
 
-if [ "$(ls -A /build/ebin)" ]; then
-  cp -R /build/ebin /data
+if [[ -n "$CLEAN_REPO" ]]; then
+	if [ "$(ls -A /build/plugins)" ]; then
+	  cp -R /build/plugins /data
+	fi
 fi

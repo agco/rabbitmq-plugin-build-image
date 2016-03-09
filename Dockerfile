@@ -15,5 +15,7 @@ VOLUME /build
 COPY docker-entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+WORKDIR /data
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["make"]
